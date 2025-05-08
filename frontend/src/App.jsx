@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardsTasks from "./components/CardsTasks";
 import ModalNewTask from "./components/ModalNewTask";
 
@@ -7,6 +7,17 @@ function App() {
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  useEffect(() => {
+    async function getTasks() {
+      const response = await fetch("http://localhost:3000/tarefas", {
+        method: "GET"
+      })
+
+      console.log(await response.json());
+    }
+    getTasks();
+  }, []);
 
   return (
     <div className="flex flex-col items-center font-semibold gap-4 h-screen bg-gray-900 p-8">
