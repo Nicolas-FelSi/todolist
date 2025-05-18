@@ -13,4 +13,14 @@ const pool = new Pool({
     port: process.env.DB_PORT || 5432,
 })
 
-export default pool;
+async function dbConnect() {
+    try {
+        await pool.connect();
+        console.log("Conexão com banco de dados realizada com sucesso!");
+    } catch (error) {
+        console.log("Erro na conexão do banco de dados. Erro: " + error.stack);
+    }
+}
+
+
+export { dbConnect, pool };
