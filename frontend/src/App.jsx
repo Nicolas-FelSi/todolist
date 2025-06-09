@@ -12,11 +12,7 @@ function App() {
   const closeModal = () => setIsOpen(false);
 
   const loadTasks = async () => {
-    try {
-      setTasks(await getAllTasks(setTasks));
-    } catch (error) {
-      console.log("Erro em listar tarefas: " + error);      
-    }
+    setTasks(await getAllTasks());
   }
 
   useEffect(() => {
@@ -31,10 +27,10 @@ function App() {
       >
         Adicionar tarefa
       </button>
-      <ul className="grid grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {
           tasks.map(task => (
-            <CardsTasks key={task.id} task={task} />
+            <CardsTasks key={task.id} task={task} setTasks={setTasks}/>
           ))
         }
       </ul>

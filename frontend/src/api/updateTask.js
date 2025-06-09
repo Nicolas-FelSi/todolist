@@ -1,7 +1,7 @@
-async function createTask(task) {
+async function updateTask(task) {
     try {
-        const response = fetch("http://localhost:3000/tarefas", {
-            method: "POST",
+        const response = fetch(`http://localhost:3000/tarefas/${task.id}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -12,8 +12,8 @@ async function createTask(task) {
 
         return data;
     } catch (error) {
-        console.log("Erro ao criar tarefa: " + error);
+        console.log("Erro ao editar tarefa: " + error);
     }
 }
 
-export default createTask;
+export default updateTask;

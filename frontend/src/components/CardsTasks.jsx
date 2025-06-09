@@ -1,15 +1,50 @@
-function CardsTasks({task}) {
-    return (
-        <>
-            <li className="bg-indigo-950 p-4 text-white border-indigo-400 border rounded-lg hover:scale-105 transition-all cursor-pointer">
-                <h3 className="text-xl">{ task.titulo }</h3>
-                <hr className="mx-[-1rem] opacity-50 my-4"/>
-                <p className="opacity-80">{ task.descricao }</p>
-                <hr className="mx-[-1rem] opacity-50 my-4"/>
-                <p className="text-center text-amber-600">{ task.status }</p>
-            </li>
-        </>
-    )
+import { useEffect, useState } from "react";
+import ModalEditTask from "./ModalEditTask";
+import getAllTasks from "../api/getAllTasks";
+
+function CardsTasks({ task, setTasks }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  const loadTasks = async () => {
+    try {
+      setTasks(await getAllTasks(setTasks));
+    } catch (error) {
+      console.log("Erro em listar tarefas: " + error);      
+    }
+  }
+
+  useEffect(() => {
+    loadTasks()
+  }, []);
+
+  return (
+    <>
+      <li onClick={openModal} className="bg-indigo-950 w-xs p-4 text-white border-indigo-900 border rounded-lg hover:scale-105 transition-all cursor-pointer">
+        <h3 className="text-xl">{task.titulo}</h3>
+        <hr className="mx-[-1rem] opacity-20 my-4" />
+        <p className="opacity-80 text-center">
+          {task.descricao == "" ? "Descrição vazia" : task.descricao}
+        </p>
+        <hr className="mx-[-1rem] opacity-20 my-4" />
+        <div className="flex justify-between items-center" onClick={(e) => e.stopPropagation()}>
+          <button className="p-1 rounded-sm shadow-2xl cursor-pointer bg-green-400">
+            <img width={"20px"} src="\verificar.svg" alt="icone de concluir tarefa" />
+          </button>
+          <p className="text-center text-amber-600">
+            {task.status == false ? "Pendente" : "Concluída"}
+          </p>
+          <button className="p-1 rounded-sm shadow-2xl cursor-pointer bg-red-400">
+            <img width={"20px"} src="\lixo.svg" alt="icone de deletar tarefa" />
+          </button>
+        </div>
+      </li>
+
+      <ModalEditTask isOpen={isOpen} closeModal={closeModal} refreshTasks={loadTasks} taskClicked={task}/>
+    </>
+  );
 }
 
 export default CardsTasks;
