@@ -1,7 +1,7 @@
-function validate(task) {
+function validate(titleTask) {
     const newErrors = {};
 
-    if (task.titulo == "") {
+    if (titleTask == "") {
         newErrors.titulo = "Preencha o título.";
     }
 

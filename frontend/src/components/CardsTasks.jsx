@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
 import ModalEditTask from "./ModalEditTask";
 import getAllTasks from "../api/getAllTasks";
+import deleteTask from "../api/deleteTask";
+import { toast } from "react-toastify";
 
-function CardsTasks({ task, setTasks }) {
+function CardsTasks({ task, setTasks, refreshTasks }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   const loadTasks = async () => {
-    try {
-      setTasks(await getAllTasks(setTasks));
-    } catch (error) {
-      console.log("Erro em listar tarefas: " + error);      
+    setTasks(await getAllTasks());
+  }
+
+  const handleDelete = async () => {
+    const data = await deleteTask(task.id_tarefa)
+
+    if (data.message) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.error);
     }
+
+    refreshTasks();
   }
 
   useEffect(() => {
@@ -36,7 +46,7 @@ function CardsTasks({ task, setTasks }) {
           <p className="text-center text-amber-600">
             {task.status == false ? "Pendente" : "Concluída"}
           </p>
-          <button className="p-1 rounded-sm shadow-2xl cursor-pointer bg-red-400">
+          <button className="p-1 rounded-sm shadow-2xl cursor-pointer bg-red-400" onClick={handleDelete}>
             <img width={"20px"} src="\lixo.svg" alt="icone de deletar tarefa" />
           </button>
         </div>

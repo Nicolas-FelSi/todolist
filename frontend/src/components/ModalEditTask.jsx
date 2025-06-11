@@ -5,7 +5,7 @@ import validate from "../utils/validateForm.js"
 function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }) {
   const [errors, setErrors] = useState([]);
   const [task, setTask] = useState({
-    id: taskClicked.id,
+    id_tarefa: taskClicked.id_tarefa,
     titulo: taskClicked.titulo,
     descricao: taskClicked.descricao,
   });
@@ -13,7 +13,7 @@ function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validate(task);
+    const validationErrors = validate(task.titulo);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);

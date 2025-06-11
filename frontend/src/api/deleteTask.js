@@ -1,19 +1,18 @@
-async function updateTask(task) {
+async function deleteTask(task) {
     try {
         const response = fetch(`http://localhost:3000/tarefas/${task.id_tarefa}`, {
-            method: "PUT",
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(task)
+            }
         })
 
         const data = (await response).json();
 
         return data;
     } catch (error) {
-        console.log("Erro ao editar tarefa: " + error);
+        console.log("Erro ao deletar tarefa: " + error);
     }
 }
 
-export default updateTask;
+export default deleteTask;

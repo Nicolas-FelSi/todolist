@@ -10,9 +10,9 @@ async function listTasks(req, res) {
   try {
     const tasks = await getAllTasks();
 
-    res.status(200).json(tasks);
+    res.status(200).json({ tasks });
   } catch (error) {
-    res.status(500).json("Erro ao listar tarefas: " + error.stack);
+    res.status(500).json({ error: "Erro ao listar tarefas: " + error.stack });
   }
 }
 
@@ -29,11 +29,11 @@ async function findTaskById(req, res) {
 
     const task = await getTaskById(id);
 
-    res.status(200).json(task);
+    res.status(200).json({ task });
   } catch (error) {
     res
       .status(500)
-      .json(`Erro ao encontrar tarefa com id ${id}: ` + error.stack);
+      .json({ error: `Erro ao encontrar tarefa com id ${id}: ` + error.stack });
   }
 }
 
@@ -53,7 +53,7 @@ async function addTask(req, res) {
       data: createdTask,
     });
   } catch (error) {
-    res.status(500).json("Erro ao criar tarefa: " + error.stack);
+    res.status(500).json({ error: "Erro ao criar tarefa: " + error.stack });
   }
 }
 
@@ -63,12 +63,12 @@ async function editTask(req, res) {
     const { id } = req.params;
 
     if (isNaN(id)) {
-      res.status(400).json("ID com formato incorreto, apenas números.");
+      res.status(400).json({error: "ID com formato incorreto, apenas números." });
       return;
     }
 
     if (!(titulo || status)) {
-      res.status(400).json("Dados incompletos!");
+      res.status(400).json({ error: "Dados incompletos!" });
       return;
     }
 
@@ -81,7 +81,7 @@ async function editTask(req, res) {
   } catch (error) {
     res
       .status(500)
-      .json(`Erro ao atualizar tarefa com id ${id}: ` + error.stack);
+      .json({ error: `Erro ao atualizar tarefa com id ${id}: ` + error.stack });
   }
 }
 
@@ -103,7 +103,7 @@ async function removeTask(req, res) {
       data: deletedTask,
     });
   } catch (error) {
-    res.status(500).json(`Erro ao deletar tarefa com id ${id}: ` + error.stack);
+    res.status(500).json({ error: `Erro ao deletar tarefa com id ${id}: ` + error.stack });
   }
 }
 

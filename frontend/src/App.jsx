@@ -12,7 +12,8 @@ function App() {
   const closeModal = () => setIsOpen(false);
 
   const loadTasks = async () => {
-    setTasks(await getAllTasks());
+    const data = await getAllTasks();  
+    setTasks(data.tasks);
   }
 
   useEffect(() => {
@@ -27,11 +28,15 @@ function App() {
       >
         Adicionar tarefa
       </button>
-      <ul className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {
-          tasks.map(task => (
-            <CardsTasks key={task.id} task={task} setTasks={setTasks}/>
-          ))
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        { 
+          tasks.length != 0 ?
+            tasks.map(task => (
+                <CardsTasks key={task.id_tarefa} task={task} setTasks={setTasks} refreshTasks={loadTasks}/>
+              )) 
+            : (
+              <p>Nenhuma tarefa adicionada</p>
+            )
         }
       </ul>
 

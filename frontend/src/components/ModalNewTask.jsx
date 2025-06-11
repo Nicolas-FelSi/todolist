@@ -1,6 +1,7 @@
 import { useState } from "react";
 import createTask from "../api/createTask";
 import validate from "../utils/validateForm.js"
+import { toast } from "react-toastify";
 
 function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
   const [errors, setErrors] = useState([]);
@@ -12,14 +13,21 @@ function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validate(task);
+    const validationErrors = validate(task.titulo);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    await createTask(task);
+    const data = await createTask(task);
+
+    if (data.message) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.error);
+    }
+
     refreshTasks();
     setTask({ titulo: "", descricao: "" });
     setErrors([]);
@@ -85,7 +93,7 @@ function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
               className="p-2 bg-amber-500 rounded-sm cursor-pointer hover:bg-amber-600 transition-all hover:scale-105"
               type="submit"
             >
-              Adicionar tarefa
+              Adicionar
             </button>
           </form>
         </div>
