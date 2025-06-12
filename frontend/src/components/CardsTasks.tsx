@@ -3,8 +3,15 @@ import ModalEditTask from "./ModalEditTask";
 import getAllTasks from "../api/getAllTasks";
 import deleteTask from "../api/deleteTask";
 import { toast } from "react-toastify";
+import { TaskProps } from "../types";
 
-function CardsTasks({ task, setTasks, refreshTasks }) {
+interface CardTaskProps {
+  task: TaskProps;
+  setTasks: (tasks: Array<TaskProps>) => void;
+  refreshTasks: () => void;
+}
+
+function CardsTasks({ task, setTasks, refreshTasks }: CardTaskProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
@@ -15,7 +22,7 @@ function CardsTasks({ task, setTasks, refreshTasks }) {
   }
 
   const handleDelete = async () => {
-    const data = await deleteTask(task.id_tarefa)
+    const data = await deleteTask(task.id)
 
     if (data.message) {
       toast.success(data.message);

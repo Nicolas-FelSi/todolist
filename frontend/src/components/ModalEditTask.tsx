@@ -1,16 +1,18 @@
 import { useState } from "react";
-import updateTask from "../api/updateTask";
+import updateTask from "../api/updateTask.js";
 import validate from "../utils/validateForm.js"
+import { ErrorProp, ModalEditTaskProps, TaskProps } from "../types.js";
 
-function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }) {
-  const [errors, setErrors] = useState([]);
-  const [task, setTask] = useState({
-    id_tarefa: taskClicked.id_tarefa,
+function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }: ModalEditTaskProps) {
+  const [errors, setErrors] = useState<ErrorProp>({});
+  const [task, setTask] = useState<TaskProps>({
+    id: taskClicked.id,
     titulo: taskClicked.titulo,
     descricao: taskClicked.descricao,
+    status: false
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const validationErrors = validate(task.titulo);
@@ -22,12 +24,11 @@ function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }) {
 
     await updateTask(task);
     refreshTasks();
-    setTask({ titulo: "", descricao: "" });
-    setErrors([]);
+    setErrors({});
     closeModal();
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setTask({
       ...task,
       [e.target.name]: e.target.value,

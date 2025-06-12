@@ -2,18 +2,30 @@ import { useEffect, useState } from "react";
 import CardsTasks from "./components/CardsTasks";
 import ModalNewTask from "./components/ModalNewTask";
 import getAllTasks from "./api/getAllTasks";
-import { ToastContainer } from "react-toastify" 
+import { toast, ToastContainer } from "react-toastify" 
+import { TaskProps } from "./types";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Array<TaskProps>>([]);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   const loadTasks = async () => {
-    const data = await getAllTasks();  
-    setTasks(data.tasks);
+    try {
+      const data = await getAllTasks(); 
+      
+      if (data && Array.isArray(data)){
+        setTasks(data);
+      } else {
+        toast.error(data);
+      }
+
+    } catch (error) {
+      console.log("Erro no componente: " + error);
+      setTasks([]);
+    }
   }
 
   useEffect(() => {
@@ -32,7 +44,7 @@ function App() {
         { 
           tasks.length != 0 ?
             tasks.map(task => (
-                <CardsTasks key={task.id_tarefa} task={task} setTasks={setTasks} refreshTasks={loadTasks}/>
+                <CardsTasks key={task.id} task={task} setTasks={setTasks} refreshTasks={loadTasks}/>
               )) 
             : (
               <p>Nenhuma tarefa adicionada</p>

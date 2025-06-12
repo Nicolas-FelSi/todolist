@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Compila para a versão mais moderna do JS, o Vite cuida da compatibilidade com navegadores
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Informa ao TS sobre as APIs do navegador e do JS moderno
+    "module": "ESNext",
+    "skipLibCheck": true, // Pula a verificação de tipos em arquivos de bibliotecas (node_modules)
+
+    /* Bundler mode */
+    "moduleResolution": "bundler", // Modo moderno de resolução de módulos, ideal para o Vite
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true, // Exigido pelo Vite, pois ele transpila cada arquivo separadamente
+    "noEmit": true, // O Vite que vai gerar os arquivos finais, não o TypeScript. O TS aqui só verifica os tipos.
+    "jsx": "react-jsx", // Usa a nova transformação de JSX do React
+
+    /* Linter Checks */
+    "strict": true, // Habilita todas as verificações de tipo estritas. ESSENCIAL para aproveitar o TS.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"], // Diz ao TS para verificar apenas os arquivos dentro da pasta 'src'
+  "references": [{ "path": "./tsconfig.node.json" }] // Mantém a referência ao arquivo de config do Vite
+}

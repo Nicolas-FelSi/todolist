@@ -1,40 +1,46 @@
 import { useState } from "react";
-import createTask from "../api/createTask";
+import createTask from "../api/createTask.js";
 import validate from "../utils/validateForm.js"
+import { ErrorProp } from "../types.js"
 import { toast } from "react-toastify";
+import { ModalNewTaskProps } from "../types.js";
 
-function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
-  const [errors, setErrors] = useState([]);
+function ModalNewTask({ isOpen, closeModal, refreshTasks }: ModalNewTaskProps) {
+  const [error, setError] = useState<ErrorProp>({});
   const [task, setTask] = useState({
     titulo: "",
     descricao: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validationErrors = validate(task.titulo);
+    const validationError = validate(task.titulo);
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    if (Object.keys(validationError).length > 0) {
+      setError(validationError);
       return;
     }
 
-    const data = await createTask(task);
+    try {
+      const data = await createTask(task);
 
-    if (data.message) {
-      toast.success(data.message);
-    } else {
-      toast.error(data.error);
+      if (data.message) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.error);
+      }
+    } catch (error) {
+      
     }
-
+    
     refreshTasks();
     setTask({ titulo: "", descricao: "" });
-    setErrors([]);
+    setError({});
     closeModal();
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setTask({
       ...task,
       [e.target.name]: e.target.value,
@@ -63,7 +69,7 @@ function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
                 Título
               </label>
               <input
-                className={`w-full bg-indigo-100 text-gray-700 border ${errors.titulo ? "border-red-600" : ""} rounded py-3 px-4 focus:outline-none focus:bg-white`}
+                className={`w-full bg-indigo-100 text-gray-700 border ${error.titulo ? "border-red-600" : ""} rounded py-3 px-4 focus:outline-none focus:bg-white`}
                 id="inputTitle"
                 type="text"
                 name="titulo"
@@ -72,7 +78,7 @@ function ModalNewTask({ isOpen, closeModal, refreshTasks }) {
                 onChange={handleChange}
               />
             </div>
-            { errors.titulo && <p className="bg-red-200 rounded-sm py-0.5 px-2 border mt-1 border-red-600">{errors.titulo}</p> }
+            { error.titulo && <p className="bg-red-200 rounded-sm py-0.5 px-2 border mt-1 border-red-600">{error.titulo}</p> }
             <div className="w-full mt-3">
               <label
                 className="uppercase text-xs font-bold mb-2"

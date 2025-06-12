@@ -1,6 +1,8 @@
-async function updateTask(task) {
+import { TaskProps } from "../types";
+
+async function updateTask(task: TaskProps) {
     try {
-        const response = fetch(`http://localhost:3000/tarefas/${task.id_tarefa}`, {
+        const response = fetch(`http://localhost:3000/tarefas/${task.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

@@ -1,6 +1,6 @@
-async function deleteTask(task) {
+async function deleteTask(id_tarefa: number) {
     try {
-        const response = fetch(`http://localhost:3000/tarefas/${task.id_tarefa}`, {
+        const response = fetch(`http://localhost:3000/tarefas/${id_tarefa}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
