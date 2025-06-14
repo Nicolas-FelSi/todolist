@@ -1,17 +1,22 @@
-async function deleteTask(id_tarefa: number) {
+async function deleteTask(id: number) {
     try {
-        const response = fetch(`http://localhost:3000/tarefas/${id_tarefa}`, {
+        const response = await fetch(`http://localhost:3000/tarefas/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }
         })
 
-        const data = (await response).json();
+        if (!response.ok) {
+            throw new Error("Erro ao deletar a tarefa: " + response.statusText);
+        }
+
+        const data = response.json();
 
         return data;
     } catch (error) {
-        console.log("Erro ao deletar tarefa: " + error);
+        console.log(error);
+        throw error;
     }
 }
 

@@ -20,8 +20,7 @@ async function createTask(task: TaskProps) {
     } catch (error) {
         console.log("Erro ao criar tarefa: " + error);
         throw error;
-        
-    }
+     }
 }
 
 export default createTask;

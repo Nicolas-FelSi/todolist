@@ -22,7 +22,7 @@ function CardsTasks({ task, setTasks, refreshTasks }: CardTaskProps) {
   }
 
   const handleDelete = async () => {
-    const data = await deleteTask(task.id)
+    const data = await deleteTask(task.id_tarefa)
 
     if (data.message) {
       toast.success(data.message);
