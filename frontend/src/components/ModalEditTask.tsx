@@ -2,6 +2,7 @@ import { useState } from "react";
 import updateTask from "../api/updateTask.js";
 import validate from "../utils/validateForm.js"
 import { ErrorProp, ModalEditTaskProps, TaskProps } from "../types.js";
+import { toast } from "react-toastify";
 
 function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }: ModalEditTaskProps) {
   const [errors, setErrors] = useState<ErrorProp>({});
@@ -22,7 +23,14 @@ function ModalEditTask({ isOpen, closeModal, refreshTasks, taskClicked }: ModalE
       return;
     }
 
-    await updateTask(task);
+    const data = await updateTask(task);
+    
+    if (data.message) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.error);
+    }
+
     refreshTasks();
     setErrors({});
     closeModal();

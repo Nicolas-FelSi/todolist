@@ -12,9 +12,12 @@ export interface ModalEditTaskProps extends ModalNewTaskProps {
     taskClicked: TaskProps;
 }
 
-export interface TaskProps {
-    id: number;
+export interface CreateTaskProps {
     titulo: string;
     descricao: string;
+}
+
+export interface TaskProps extends CreateTaskProps {
+    id: number;
     status: boolean;
 }

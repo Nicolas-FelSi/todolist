@@ -47,7 +47,7 @@ function App() {
                 <CardsTasks key={task.id} task={task} setTasks={setTasks} refreshTasks={loadTasks}/>
               )) 
             : (
-              <p>Nenhuma tarefa adicionada</p>
+              <p className="col-span-full text-white">Nenhuma tarefa adicionada</p>
             )
         }
       </ul>

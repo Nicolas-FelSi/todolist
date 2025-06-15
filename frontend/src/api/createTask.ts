@@ -1,6 +1,6 @@
-import { TaskProps } from "../types";
+import { CreateTaskProps } from "../types";
 
-async function createTask(task: TaskProps) {
+async function createTask(task: CreateTaskProps) {
     try {
         const response = await fetch("http://localhost:3000/tarefas", {
             method: "POST",
@@ -11,7 +11,7 @@ async function createTask(task: TaskProps) {
         })
 
         if (!response.ok) {
-            throw new Error(`Falha em criar a tarefa: ${response.statusText}`);
+            throw new Error(`Falha em criar a tarefa: ${response.json().then(error => error)}`);
         }
 
         const data = await response.json();
