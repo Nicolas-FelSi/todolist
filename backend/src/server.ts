@@ -1,8 +1,8 @@
-import express from "express"
-import dotenv from "dotenv";
-import cors from "cors"
-import router from "./taskRoutes.js"
-import { dbConnect } from "./database.js";
+const express = require("express")
+const dotenv = require("dotenv")
+const cors = require("cors")
+const router = require("./taskRoutes")
+const { dbConnect } = require("./database")
 
 dotenv.config();
 
